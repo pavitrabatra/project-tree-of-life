@@ -4,15 +4,14 @@ import numpy as np
 from scipy.linalg import expm
 
 #For non sparse graph; faster algorithm exists for sparse(small p) graphs
-G = nx.gnp_random_graph(200, 0.5, seed=247, directed=False)
+G = nx.gnp_random_graph(200, 0.5, seed=None, directed=False)
 #nx.draw(G, with_labels=True)
 
-beta = 4
-x=np.zeros(81)
-y=np.zeros(81)
-i=0
+beta = 1/10000
+x=np.empty(9)
+y=np.empty(9)
 
-while (beta >= -4.1):
+while (beta <= 10000):
 
     L = nx.laplacian_matrix(G)
     #The above generates a scipy sparse array and not a matrix(Better for comutational purposes?);
@@ -20,20 +19,19 @@ while (beta >= -4.1):
     #Converting the sparse array to matrix 
     L = L.todense()
 
-    pho_tmp = expm(-10**(beta)*L)
+    pho_tmp = expm(-beta*L)
     Z = pho_tmp.trace()
-    pho = expm(-10**(beta)*L)/Z
+    pho = expm(-beta*L)/Z
     Lp = np.matmul(L,pho)
     Tr = Lp.trace()
 
-    S = np.log2(Z) + (10**(beta)/(np.log(2)) * Tr)
+    S = np.log2(Z) + (beta/(np.log(2)) * Tr)
     print(S/(np.log2(200)))
    
-    x[i] = -beta
-    y[i] = S/(np.log2(200))
-    
-    i=i+1
-    beta = beta - 0.1
+    x = np.append(x, 1/beta)
+    y = np.append(y, S/(np.log2(200)))
+
+    beta = beta *10
 
 print(x)
 print(y)
