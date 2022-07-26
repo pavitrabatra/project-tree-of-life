@@ -1,5 +1,4 @@
 import numpy as np
-import networkx as nx
 from scipy.linalg import logm, expm
 
 #Add warning signal for input function to be laplacian and numpy.ndarray
