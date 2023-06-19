@@ -15,7 +15,7 @@ Study of protein interaction networks...
 
 
 ## Citing
-
+If you find this work useful for your research, please consider citing [this paper]():
 
 ## Miscellaneous
 
